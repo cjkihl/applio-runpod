@@ -3,3 +3,4 @@
 .github
 *.md
 build.sh
+prerequisites_build.py

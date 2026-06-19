@@ -2,9 +2,6 @@ version: '3.8'
 
 services:
   applio:
-    build:
-      context: ./
-      dockerfile: Dockerfile.runpod
     image: ghcr.io/cjkihl/applio-runpod:latest
     ports:
       - "6969:6969"
