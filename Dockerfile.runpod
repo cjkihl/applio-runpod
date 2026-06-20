@@ -13,9 +13,10 @@ RUN apt update && apt install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/IAHispano/Applio.git /app \
     && rm -rf /app/.git \
+    && conda install python=3.11 -y \
     && pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir python-ffmpeg \
-    && pip install --no-cache-dir -r /app/requirements.txt \
+    && pip install --no-cache-dir -r /app/requirements.txt --extra-index-url https://download.pytorch.org/whl/cu128 \
     && rm -rf /root/.cache/pip
 
 COPY start.sh /start.sh
