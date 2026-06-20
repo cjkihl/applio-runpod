@@ -5,8 +5,6 @@ services:
     image: ghcr.io/cjkihl/applio-runpod:latest
     ports:
       - "6969:6969"
-    volumes:
-      - runpod-workspace:/workspace
     deploy:
       resources:
         reservations:
@@ -15,8 +13,3 @@ services:
               count: 1
               capabilities: [gpu]
     restart: unless-stopped
-
-volumes:
-  runpod-workspace:
-    external: true
-    name: runpod-workspace
