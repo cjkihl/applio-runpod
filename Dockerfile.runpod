@@ -5,18 +5,22 @@ ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /app
 
 RUN apt update && apt install -y --no-install-recommends \
+    software-properties-common \
+    curl \
     git \
     libgl1 \
     libglib2.0-0 \
     ffmpeg \
     libportaudio2 \
+    && add-apt-repository -y ppa:deadsnakes/ppa \
+    && apt install -y --no-install-recommends python3.11 python3.11-distutils python3.11-venv \
     && rm -rf /var/lib/apt/lists/* \
+    && curl -sS https://bootstrap.pypa.io/get-pip.py | python3.11 \
     && git clone --depth 1 https://github.com/IAHispano/Applio.git /app \
     && rm -rf /app/.git \
-    && sed -i 's/numpy==2.4.4/numpy/' /app/requirements.txt \
-    && pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir python-ffmpeg \
-    && pip install --no-cache-dir -r /app/requirements.txt --extra-index-url https://download.pytorch.org/whl/cu128 \
+    && python3.11 -m pip install --no-cache-dir --upgrade pip \
+    && python3.11 -m pip install --no-cache-dir python-ffmpeg \
+    && python3.11 -m pip install --no-cache-dir -r /app/requirements.txt --extra-index-url https://download.pytorch.org/whl/cu128 \
     && rm -rf /root/.cache/pip
 
 COPY start.sh /start.sh
