@@ -4,7 +4,7 @@ set -e
 echo "=== GPU Info ==="
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader || echo "No GPU detected"
 
-# Ensure RunPod persistent directories exist
+# Ensure RunPod persistent directories exist in the mounted volume
 mkdir -p /workspace/logs \
          /workspace/config \
          /workspace/datasets \
@@ -38,20 +38,18 @@ if [ -d /app/assets/presets ]; then rm -rf /app/assets/presets; fi
 ln -sf /workspace/presets /app/assets/presets
 
 # --- Clean and Link RVC Models ---
-# Pretrained Base Models
 if [ -d /app/rvc/models/pretraineds ]; then rm -rf /app/rvc/models/pretraineds; fi
 ln -sf /workspace/models/pretraineds /app/rvc/models/pretraineds
 
-# Embedders (hubert, etc.)
 if [ -d /app/rvc/models/embedders ]; then rm -rf /app/rvc/models/embedders; fi
 ln -sf /workspace/models/embedders /app/rvc/models/embedders
 
-# Predictors (RMVPE, FCPE, etc.)
 if [ -d /app/rvc/models/predictors ]; then rm -rf /app/rvc/models/predictors; fi
 ln -sf /workspace/models/predictors /app/rvc/models/predictors
 
 echo "=== Symlinks configured successfully ==="
 echo "=== Starting Applio on port 6969 ==="
 
-cd /workspace
+# CRITICAL FIX: Run from /app where the codebase resides, not the empty /workspace volume
+cd /app
 exec python app.py --port 6969
