@@ -52,4 +52,4 @@ echo "=== Starting Applio on port 6969 ==="
 
 # CRITICAL FIX: Run from /app where the codebase resides, not the empty /workspace volume
 cd /app
-exec python3.11 app.py --port 6969
+exec python3.11 app.py --server-name 0.0.0.0 --port 6969
