@@ -15,7 +15,15 @@ mkdir -p /workspace/logs \
          /workspace/presets
 
 # --- Clean and Link Logs ---
-if [ -d /app/logs ]; then rm -rf /app/logs; fi
+mkdir -p /workspace/logs
+
+if [ -d /app/logs ] && [ ! -L /app/logs ]; then
+    echo "=== Copying default Applio log assets to persistent storage ==="
+    cp -r /app/logs/* /workspace/logs/ 2>/dev/null || true
+    rm -rf /app/logs
+fi
+
+rm -rf /app/logs
 ln -sf /workspace/logs /app/logs
 
 # --- Clean and Link Config ---

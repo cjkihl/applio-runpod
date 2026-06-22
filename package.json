@@ -1,0 +1,7 @@
+{
+  "name": "applio-runpod",
+  "private": true,
+  "scripts": {
+    "upload-recording": "bun run scripts/upload-recording.ts"
+  }
+}
