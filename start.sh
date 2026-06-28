@@ -117,6 +117,20 @@ rm -f /app/assets/config.json
 ln -sf /workspace/config/config.json /app/assets/config.json
 
 echo "=== All mounts configured ==="
+
+# -------------------------------------------------------------------------
+# 7. Patch Gradio allowed_paths for persistent storage directories
+# -------------------------------------------------------------------------
+# Gradio 5+ blocks serving files not within its working directory or the
+# system temp dir. Because we bind-mount persistent storage (e.g. audios,
+# datasets, presets) from the network volume, audio files generated during
+# inference end up at paths Gradio doesn't trust. This injects the
+# allowed_paths parameter into demo.launch(...) so the web UI can serve
+# those files back to the browser without raising an InvalidPathError.
+# -------------------------------------------------------------------------
+echo "=== Patching Gradio allowed_paths ==="
+sed -i 's/\(\.launch(\)/\1allowed_paths=["\/app\/assets\/audios", "\/app\/assets\/datasets", "\/app\/assets\/presets"], /' /app/app.py
+
 echo "=== Starting Applio on port 6969 ==="
 
 cd /app
